@@ -12,10 +12,19 @@ export function AuthProvider({ children }) {
       setUser(data);
     } catch (e) {
       try {
-        await api.post("/auth/refresh");
+        const refreshToken = localStorage.getItem("fos_refresh_token");
+        const { data: refData } = await api.post("/auth/refresh", { refresh_token: refreshToken });
+        if (refData?.access_token) {
+          localStorage.setItem("fos_token", refData.access_token);
+        }
+        if (refData?.refresh_token) {
+          localStorage.setItem("fos_refresh_token", refData.refresh_token);
+        }
         const { data } = await api.get("/auth/me");
         setUser(data);
       } catch (err) {
+        localStorage.removeItem("fos_token");
+        localStorage.removeItem("fos_refresh_token");
         setUser(false);
       }
     }
@@ -31,13 +40,19 @@ export function AuthProvider({ children }) {
   }, [checkAuth]);
 
   useEffect(() => {
-    const onUnauth = () => setUser(false);
+    const onUnauth = () => {
+      localStorage.removeItem("fos_token");
+      localStorage.removeItem("fos_refresh_token");
+      setUser(false);
+    };
     window.addEventListener("fos:unauthorized", onUnauth);
     return () => window.removeEventListener("fos:unauthorized", onUnauth);
   }, []);
 
   const logout = async () => {
     await api.post("/auth/logout").catch(() => null);
+    localStorage.removeItem("fos_token");
+    localStorage.removeItem("fos_refresh_token");
     setUser(false);
   };
 

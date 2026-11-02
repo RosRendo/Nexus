@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from typing import Optional
 
 import bcrypt
 import httpx
@@ -10,7 +11,7 @@ from pydantic import BaseModel, Field
 from core import JWT_ALG, NO_ID, audit, client_ip, db, get_current_user, iso, new_id, now, role_for
 
 router = APIRouter(prefix="/api/auth")
-COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "false").lower() == "true"
+COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "true").lower() == "true"
 COOKIE_SAMESITE = "none" if COOKIE_SECURE else "lax"
 COOKIE = dict(httponly=True, secure=COOKIE_SECURE, samesite=COOKIE_SAMESITE, path="/")
 
@@ -28,7 +29,7 @@ def make_token(user_id: str, kind: str, delta: timedelta) -> str:
 
 
 def set_jwt_cookies(resp: Response, user_id: str):
-    resp.set_cookie("access_token", make_token(user_id, "access", timedelta(minutes=15)), max_age=900, **COOKIE)
+    resp.set_cookie("access_token", make_token(user_id, "access", timedelta(minutes=60)), max_age=3600, **COOKIE)
     resp.set_cookie("refresh_token", make_token(user_id, "refresh", timedelta(days=7)), max_age=604800, **COOKIE)
 
 
@@ -70,12 +71,23 @@ async def login(body: LoginIn, request: Request, response: Response):
     await db.login_attempts.delete_many({"identifier": ident})
     set_jwt_cookies(response, user["id"])
     await audit(user, "auth.login", email, "password", request)
-    return public_user(user)
+    ret = public_user(user)
+    ret["access_token"] = make_token(user["id"], "access", timedelta(minutes=60))
+    ret["refresh_token"] = make_token(user["id"], "refresh", timedelta(days=7))
+    return ret
+
+
+class RefreshIn(BaseModel):
+    refresh_token: Optional[str] = None
 
 
 @router.post("/refresh")
-async def refresh(request: Request, response: Response):
-    token = request.cookies.get("refresh_token")
+async def refresh(request: Request, response: Response, body: Optional[RefreshIn] = None):
+    token = request.cookies.get("refresh_token") or (body and body.refresh_token)
+    if not token:
+        auth = request.headers.get("authorization", "")
+        if auth.startswith("Bearer "):
+            token = auth[7:]
     if not token:
         raise HTTPException(401, "No refresh token")
     try:
@@ -88,7 +100,11 @@ async def refresh(request: Request, response: Response):
     if not user or not role_for(user["email"]):
         raise HTTPException(401, "Access revoked")
     set_jwt_cookies(response, user["id"])
-    return {"ok": True}
+    return {
+        "ok": True,
+        "access_token": make_token(user["id"], "access", timedelta(minutes=60)),
+        "refresh_token": make_token(user["id"], "refresh", timedelta(days=7))
+    }
 
 
 class SessionIn(BaseModel):
@@ -117,7 +133,10 @@ async def google_session(body: SessionIn, request: Request, response: Response):
     await db.user_sessions.insert_one({"session_token": data["session_token"], "user_id": user["id"], "expires_at": iso(now() + timedelta(days=7)), "created_at": iso()})
     response.set_cookie("session_token", data["session_token"], max_age=604800, **COOKIE)
     await audit(user, "auth.login", email, "google", request)
-    return public_user(user)
+    ret = public_user(user)
+    ret["access_token"] = make_token(user["id"], "access", timedelta(minutes=60))
+    ret["session_token"] = data["session_token"]
+    return ret
 
 
 @router.get("/me")

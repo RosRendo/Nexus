@@ -28,3 +28,4 @@ echo [3/3] Starting ngrok tunnel to inlying-untranscended-dorothy.ngrok-free.dev
 npx ngrok http --url=inlying-untranscended-dorothy.ngrok-free.dev 8000
 
 pause
+
