@@ -134,7 +134,7 @@ function Settings({ p }) {
       <ProviderLinks p={p} />
       <div className="panel p-5">
         <div className="section-label mb-1">Notification rules</div>
-        <p className="text-[12px] text-mute mb-3">Matching live alerts are delivered to the in-app Notifications inbox.</p>
+        <p className="text-[12px] text-mute mb-3">Matching live alerts go to the in-app Notifications inbox and, for critical alerts, by email.</p>
         {RULES.map(([k, l]) => (
           <div key={k} className="flex items-center justify-between h-9 border-b border-line last:border-0 text-[12.5px]">
             {l}<Switch data-testid={`notify-rule-${k}`} checked={!!rules[k]} onCheckedChange={(v) => { const n = { ...rules, [k]: v }; setRules(n); saveRules.mutate({ id: p.id, notification_rules: n }); }} />

@@ -8,7 +8,7 @@ import socket
 import ssl
 import time
 from datetime import datetime, timedelta, timezone
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 import httpx
 from bson import ObjectId
@@ -55,6 +55,15 @@ async def create_record(kind: str, request: Request, body: dict = Body(...), use
     if kind == "resources":
         data.update({"metrics": None, "last_seen_at": None})
     await db[coll].insert_one(dict(data))
+    if kind == "deployments" and data.get("status") == "failed":
+        await raise_alert(data["project_id"], "failed_deployment", "critical",
+                          f"Deployment failed ({data.get('environment', 'production')})",
+                          data.get("message") or data.get("branch") or "Deployment failed",
+                          "manual", f"dep:{data['id']}:failed")
+    if kind == "resources" and data.get("status") == "down":
+        await raise_alert(data["project_id"], "resource_down", "critical",
+                          f"{data['name']} is down", f"{data['type']} reported down",
+                          "manual", f"res:{data['id']}:down")
     await log_event(data["project_id"], kind.rstrip("s"), f"{kind[:-1].title() if kind.endswith('s') else kind.title()} added: {data.get(label) or ''}")
     await audit(user, f"{kind}.create", data["id"], str(data.get(label)), request)
     return data
@@ -67,6 +76,19 @@ async def update_record(kind: str, rid: str, request: Request, body: dict = Body
         raise HTTPException(404, "Record not found")
     upd = validate(PATCHES[kind], body) | {"updated_at": iso()}
     await db[coll].update_one({"id": rid}, {"$set": upd})
+    if kind == "deployments" and upd.get("status") == "failed":
+        rec = await db.deployments.find_one({"id": rid})
+        if rec:
+            await raise_alert(rec["project_id"], "failed_deployment", "critical",
+                              f"Deployment failed ({rec.get('environment', 'production')})",
+                              rec.get("message") or rec.get("branch") or "Deployment failed",
+                              rec.get("source", "manual"), f"dep:{rid}:failed")
+    if kind == "resources" and upd.get("status") == "down":
+        rec = await db.resources.find_one({"id": rid})
+        if rec:
+            await raise_alert(rec["project_id"], "resource_down", "critical",
+                              f"{rec['name']} is down", f"{rec['type']} reported down",
+                              rec.get("source", "manual"), f"res:{rid}:down")
     await audit(user, f"{kind}.update", rid, ", ".join(upd), request)
     return await db[coll].find_one({"id": rid}, {"_id": 0})
 
@@ -379,6 +401,75 @@ async def mark_read(body: ReadIn, user=Depends(require_owner)):
     q = {"id": {"$in": body.ids}} if body.ids else {}
     await db.notifications.update_many(q, {"$set": {"read": True}})
     return {"ok": True}
+
+
+class EmailSettingsIn(BaseModel):
+    enabled: bool = True
+    min_severity: Literal["critical", "high"] = "critical"
+    recipients: Optional[List[str]] = None
+    provider: Optional[str] = None
+    smtp_host: Optional[str] = ""
+    smtp_port: Optional[int] = 587
+    smtp_user: Optional[str] = ""
+    smtp_pass: Optional[str] = None
+    smtp_tls: Optional[bool] = True
+    smtp_from: Optional[str] = ""
+    resend_api_key: Optional[str] = None
+
+
+EmailSettingsIn.model_rebuild()
+
+
+@router.get("/notifications/email-settings")
+async def get_email_settings(user=Depends(require_owner)):
+    from emailer import email_settings
+    cfg = await email_settings()
+    last = await db.notifications.find_one({"email": {"$exists": True}}, {"_id": 0, "email": 1, "title": 1}, sort=[("email.at", -1)])
+    if cfg.get("smtp_pass"):
+        cfg["smtp_pass"] = "••••••••"
+    if cfg.get("resend_api_key"):
+        cfg["resend_api_key"] = "••••••••"
+    return cfg | {"last_delivery": last}
+
+
+@router.put("/notifications/email-settings")
+async def put_email_settings(body: EmailSettingsIn, request: Request, user=Depends(require_owner)):
+    data = body.model_dump(exclude_unset=True)
+    if data.get("smtp_pass") in ("••••••••", None, ""):
+        data.pop("smtp_pass", None)
+    if data.get("resend_api_key") in ("••••••••", None, ""):
+        data.pop("resend_api_key", None)
+    if "recipients" in data and data["recipients"] is not None:
+        data["recipients"] = [r.strip().lower() for r in data["recipients"] if r and "@" in r]
+    await db.settings.update_one({"key": "email_alerts"}, {"$set": {"key": "email_alerts", **data}}, upsert=True)
+    await audit(user, "notifications.email_settings", "", json.dumps({k: v for k, v in data.items() if "pass" not in k and "key" not in k}), request)
+    from emailer import email_settings
+    cfg = await email_settings()
+    if cfg.get("smtp_pass"):
+        cfg["smtp_pass"] = "••••••••"
+    if cfg.get("resend_api_key"):
+        cfg["resend_api_key"] = "••••••••"
+    return cfg
+
+
+@router.post("/notifications/email-test")
+async def email_test(request: Request, user=Depends(require_owner)):
+    from emailer import alert_template, email_settings, send_email
+    if await db.audit_logs.count_documents({"action": "notifications.email_test", "created_at": {"$gte": since(1)}}) >= 10:
+        raise HTTPException(429, "Test email limit reached (10 per hour)")
+    cfg = await email_settings()
+    target_recipients = cfg.get("recipients") or [user["email"]]
+    subject, html = alert_template("Test alert: critical alert delivery active", "Nexus Control", "This test confirms that critical alerts (failed deployments, service downtime, errors) are delivered directly to your inbox.", "critical", "test")
+    results = []
+    for r in target_recipients:
+        res = await send_email(to=r, subject=subject, html=html)
+        results.append(res)
+    await audit(user, "notifications.email_test", ",".join(target_recipients), json.dumps([r.get("status") for r in results]), request)
+    bad = next((r for r in results if r["status"] != "sent"), None)
+    if bad:
+        raise HTTPException(502, bad.get("error") or "Email could not be sent")
+    first = results[0] if results else {}
+    return {"ok": True, "to": target_recipients, "mode": first.get("mode", "smtp"), "note": first.get("note")}
 
 
 # ---------- Backups ----------

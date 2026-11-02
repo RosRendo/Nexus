@@ -137,8 +137,11 @@ async def raise_alert(project_id, type_, severity, title, detail, source, key):
     p = await db.projects.find_one({"id": project_id}, {"_id": 0, "notification_rules": 1, "name": 1})
     rule = RULE_FOR.get(type_)
     if p and (rule is None or (p.get("notification_rules") or {}).get(rule, True)):
-        await db.notifications.insert_one({"id": new_id("ntf"), "project_id": project_id, "severity": severity, "title": title,
-                                           "body": f"{p['name']}: {detail}", "source": source, "read": False, "channel": "in_app", "created_at": iso()})
+        note = {"id": new_id("ntf"), "project_id": project_id, "severity": severity, "title": title,
+                "body": f"{p['name']}: {detail}", "source": source, "read": False, "channel": "in_app", "created_at": iso()}
+        await db.notifications.insert_one(dict(note))
+        from emailer import maybe_email
+        await maybe_email(note, p["name"], detail)
     return True
 
 
