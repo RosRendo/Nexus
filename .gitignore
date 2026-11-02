@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment variables & secrets
+.env
+*.env
+.env.local
+.env.*.local
+
+# Database & local data
+backend/data/
+*.log
+
+# Build outputs
+build/
+dist/
+
+# Python cache & venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+venv/
+.venv/
+
+# OS files
+.DS_Store
+Thumbs.db
