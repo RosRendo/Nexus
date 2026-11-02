@@ -18,8 +18,6 @@ from routes_integrations import router as integrations_router  # noqa: E402
 from adapters import router as adapters_router  # noqa: E402
 from routes_ops import router as ops_router  # noqa: E402
 from routes_projects import router as projects_router  # noqa: E402
-from seed import seed_sample_portfolio  # noqa: E402
-from seed_ops import seed_ops  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 logger = logging.getLogger("founder_os")
@@ -96,9 +94,7 @@ async def startup():
         await db[coll].create_index(keys)
     await db.projects.create_index("ingest_key_hash", sparse=True)
     await db.cron_runs.create_index("run_id", unique=True)
-    await seed_sample_portfolio()
-    await seed_ops()
-    logger.info("Founder OS started")
+    logger.info("Founder OS started (Real data mode)")
 
 
 @app.on_event("shutdown")

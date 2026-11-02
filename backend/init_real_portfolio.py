@@ -336,3 +336,4 @@ async def init_real_data():
 
 if __name__ == "__main__":
     asyncio.run(init_real_data())
+
