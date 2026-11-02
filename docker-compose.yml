@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017
+      - DB_NAME=founder_os
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-p4-Pfs4FUZAWNSc5Cx8XxNEArYB36BzHq5WYosP1cRk=}
+      - JWT_SECRET=${JWT_SECRET:-super_secret_jwt_key_crm_founder_os_2026}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@crm.local}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123456}
+      - OWNER_EMAILS=${OWNER_EMAILS:-admin@crm.local}
+      - VIEWER_EMAILS=${VIEWER_EMAILS:-}
+      - WEBHOOK_CRON_SECRET=${WEBHOOK_CRON_SECRET:-super_cron_secret_crm_2026}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      - COOKIE_SECURE=${COOKIE_SECURE:-false}
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:
+

@@ -41,8 +41,11 @@ async def security_middleware(request: Request, call_next):
     if request.method in ("POST", "PUT", "PATCH", "DELETE") and path != "/api/integrations/github/webhook" and not path.startswith(("/api/ingest/", "/api/cron/")):
         origin = request.headers.get("origin")
         if origin:
+            allowed = [o.strip().rstrip("/") for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip()]
+            origin_clean = origin.rstrip("/")
             host = request.headers.get("x-forwarded-host") or request.headers.get("host", "")
-            if urlparse(origin).netloc.split(":")[0] != host.split(",")[0].strip().split(":")[0]:
+            is_same_host = urlparse(origin).netloc.split(":")[0] == host.split(",")[0].strip().split(":")[0]
+            if not is_same_host and origin_clean not in allowed and "*" not in allowed:
                 logger.warning("csrf_block origin=%s host=%s path=%s", origin, host, path)
                 return JSONResponse({"detail": "Cross-origin request blocked"}, status_code=403)
     return await call_next(request)
