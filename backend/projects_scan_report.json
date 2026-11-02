@@ -1,0 +1,1101 @@
+[
+  {
+    "name": "AI-Command-Agent",
+    "subdirs": [
+      "dist",
+      "src"
+    ],
+    "stack": [
+      "root:Vite",
+      "root:Express",
+      "root:React"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "build",
+          "preview"
+        ],
+        "deps": [
+          "lucide-react",
+          "concurrently",
+          "express",
+          "@types/react-dom",
+          "react",
+          "@types/react",
+          "@vitejs/plugin-react",
+          "vite"
+        ]
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "BusinessOs",
+    "subdirs": [
+      "apps",
+      "docs"
+    ],
+    "stack": [],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "dev:backend",
+          "dev:frontend",
+          "build",
+          "test",
+          "test:e2e"
+        ],
+        "deps": [
+          "concurrently"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgresql://postgres:zipmu3-cEcsak-jifqyf@localhost:5432/bizflow?schema=public",
+      "PORT": "4000"
+    }
+  },
+  {
+    "name": "CRM",
+    "subdirs": [
+      "backend",
+      "frontend"
+    ],
+    "stack": [
+      "Python",
+      "frontend:React",
+      "FastAPI"
+    ],
+    "db": [
+      "MongoDB"
+    ],
+    "prisma": false,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "frontend": {
+        "scripts": [
+          "start",
+          "build",
+          "test"
+        ],
+        "deps": [
+          "@radix-ui/react-avatar",
+          "@radix-ui/react-label",
+          "@radix-ui/react-toggle-group",
+          "@radix-ui/react-menubar",
+          "@radix-ui/react-switch",
+          "@radix-ui/react-alert-dialog",
+          "tailwindcss-animate",
+          "class-variance-authority"
+        ]
+      }
+    },
+    "env_vars": {
+      "MONGO_URL": "mongodb://127.0.0.1:27017",
+      "PORT": "3000"
+    }
+  },
+  {
+    "name": "CV-Gen",
+    "subdirs": [
+      "backend",
+      "docs",
+      "frontend",
+      "scratch",
+      "specs"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "backend:Express"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "backend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "prisma:generate",
+          "prisma:migrate",
+          "prisma:seed"
+        ],
+        "deps": [
+          "mammoth",
+          "express",
+          "google-auth-library",
+          "@types/multer",
+          "tsx",
+          "@types/jsonwebtoken",
+          "bcryptjs",
+          "pdf-parse"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "postcss",
+          "lucide-react",
+          "mammoth",
+          "pdf-parse",
+          "next",
+          "@react-pdf/renderer",
+          "@react-oauth/google",
+          "react"
+        ]
+      }
+    },
+    "env_vars": {
+      "PORT": "5000",
+      "DATABASE_URL": "mysql://root:rootpassword@localhost:3306/careerprepster"
+    }
+  },
+  {
+    "name": "CVGen",
+    "subdirs": [
+      "docs",
+      "prisma",
+      "public",
+      "scripts",
+      "src"
+    ],
+    "stack": [
+      "root:Next.js",
+      "root:Vite"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint",
+          "test",
+          "postinstall"
+        ],
+        "deps": [
+          "@tailwindcss/turbopack",
+          "eslint",
+          "canvas-confetti",
+          "jspdf",
+          "@hookform/resolvers",
+          "bcryptjs",
+          "next",
+          "react-hook-form"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgresql://postgres:zipmu3-cEcsak-jifqyf@localhost:5432/cvgen?schema=public"
+    }
+  },
+  {
+    "name": "Dashboard",
+    "subdirs": [
+      "backend",
+      "client-bridge",
+      "data",
+      "docs",
+      "frontend",
+      "journals",
+      "mql5",
+      "scratch",
+      "screenshots",
+      "scripts",
+      "specs",
+      "uploads",
+      "__pycache__"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "Python",
+      "backend:Express",
+      "FastAPI"
+    ],
+    "db": [
+      "Prisma",
+      "PostgreSQL"
+    ],
+    "prisma": true,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "build",
+          "start",
+          "dev",
+          "dev:node",
+          "dev:frontend",
+          "dev:backend"
+        ],
+        "deps": []
+      },
+      "backend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "prisma:generate",
+          "prisma:migrate",
+          "prisma:studio"
+        ],
+        "deps": [
+          "express",
+          "ts-node",
+          "@types/multer",
+          "@types/ws",
+          "@types/jsonwebtoken",
+          "bcryptjs",
+          "@types/cors",
+          "https-proxy-agent"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "eslint",
+          "class-variance-authority",
+          "recharts",
+          "jspdf",
+          "@tailwindcss/postcss",
+          "sonner",
+          "chart",
+          "postcss"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgresql://postgres:zipmu3-cEcsak-jifqyf@localhost:5432/trading_journal?schema=public",
+      "PORT": "5000"
+    }
+  },
+  {
+    "name": "EscrowSocial",
+    "subdirs": [
+      "docs",
+      "prisma",
+      "public",
+      "scratch",
+      "scripts",
+      "specs",
+      "src"
+    ],
+    "stack": [
+      "root:Next.js"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "@tailwindcss/turbopack",
+          "lucide-react",
+          "eslint",
+          "next",
+          "@prisma/client",
+          "@types/react-dom",
+          "react",
+          "@types/node"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgresql://postgres:PASSWORD@HOST:5432/safedeal?sslmode=require"
+    }
+  },
+  {
+    "name": "Formora",
+    "subdirs": [
+      "dist",
+      "replica",
+      "server",
+      "src"
+    ],
+    "stack": [
+      "root:Vite",
+      "root:Express",
+      "root:React"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "start",
+          "dev",
+          "server",
+          "client",
+          "build",
+          "preview"
+        ],
+        "deps": [
+          "@radix-ui/react-label",
+          "@radix-ui/react-switch",
+          "@radix-ui/react-alert-dialog",
+          "concurrently",
+          "class-variance-authority",
+          "@xyflow/react",
+          "express",
+          "html-to-image"
+        ]
+      }
+    },
+    "env_vars": {
+      "PORT": "3001"
+    }
+  },
+  {
+    "name": "FullStack-Guide",
+    "subdirs": [
+      "scripts",
+      "showcase"
+    ],
+    "stack": [],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "install:skills:win",
+          "install:skills:unix",
+          "test"
+        ],
+        "deps": []
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "N8N",
+    "subdirs": [
+      "n8n_data"
+    ],
+    "stack": [],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {},
+    "env_vars": {}
+  },
+  {
+    "name": "Orchestrator",
+    "subdirs": [
+      "backend",
+      "electron",
+      "frontend",
+      "project"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "root:Next.js",
+      "backend:NestJS"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "build",
+          "start",
+          "dev",
+          "build:all",
+          "start:runner"
+        ],
+        "deps": [
+          "react",
+          "next",
+          "react-dom"
+        ]
+      },
+      "backend": {
+        "scripts": [
+          "build",
+          "format",
+          "start",
+          "start:dev",
+          "start:debug",
+          "start:prod"
+        ],
+        "deps": [
+          "eslint",
+          "@nestjs/platform-socket.io",
+          "@nestjs/core",
+          "reflect-metadata",
+          "eslint-plugin-prettier",
+          "ts-node",
+          "supertest",
+          "jest"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "@monaco-editor/react",
+          "eslint",
+          "xterm",
+          "next",
+          "socket.io-client",
+          "react",
+          "@types/node",
+          "@types/react-dom"
+        ]
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "PolyMarket",
+    "subdirs": [
+      "data",
+      "venv"
+    ],
+    "stack": [
+      "Python"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {},
+    "env_vars": {}
+  },
+  {
+    "name": "Portfolio",
+    "subdirs": [
+      "public",
+      "scripts",
+      "src"
+    ],
+    "stack": [
+      "root:Next.js"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "@tailwindcss/turbopack",
+          "lucide-react",
+          "eslint",
+          "next",
+          "framer-motion",
+          "@types/react-dom",
+          "react",
+          "@types/node"
+        ]
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "POS_SYSTEM",
+    "subdirs": [
+      "backend",
+      "frontend"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "backend:Express"
+    ],
+    "db": [
+      "PostgreSQL"
+    ],
+    "prisma": false,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "backend": {
+        "scripts": [
+          "dev",
+          "start",
+          "migrate",
+          "seed",
+          "test"
+        ],
+        "deps": [
+          "bcryptjs",
+          "pg",
+          "jsonwebtoken",
+          "stripe",
+          "express",
+          "nodemon",
+          "helmet",
+          "ws"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "@stripe/stripe-js",
+          "lucide-react",
+          "eslint",
+          "idb",
+          "@tanstack/react-query",
+          "next",
+          "axios",
+          "react-hot-toast"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgresql://postgres:password@localhost:5433/pos_system",
+      "PORT": "3001"
+    }
+  },
+  {
+    "name": "PrivateTutor",
+    "subdirs": [
+      "dist",
+      "public",
+      "src"
+    ],
+    "stack": [
+      "root:Vite"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "build",
+          "preview"
+        ],
+        "deps": [
+          "vite"
+        ]
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "Qrcode",
+    "subdirs": [
+      "backend"
+    ],
+    "stack": [
+      "Python",
+      "backend:Express"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": true,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "backend": {
+        "scripts": [
+          "start",
+          "dev"
+        ],
+        "deps": [
+          "express-fileupload",
+          "axios",
+          "express",
+          "nodemon",
+          "dotenv",
+          "cors"
+        ]
+      }
+    },
+    "env_vars": {
+      "PORT": "5000"
+    }
+  },
+  {
+    "name": "Real-Estate",
+    "subdirs": [
+      "dist",
+      "prisma",
+      "public",
+      "src",
+      "uploads"
+    ],
+    "stack": [
+      "root:Vite",
+      "root:Express",
+      "root:React"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "start",
+          "build",
+          "lint",
+          "preview",
+          "db:up"
+        ],
+        "deps": [
+          "express",
+          "canvas-confetti",
+          "bcryptjs",
+          "multer",
+          "react",
+          "three",
+          "@vitejs/plugin-react",
+          "zod"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgresql://postgres:zipmu3-cEcsak-jifqyf@localhost:5432/estatex",
+      "PORT": "5173"
+    }
+  },
+  {
+    "name": "RendoOs",
+    "subdirs": [
+      "prisma",
+      "public",
+      "replica",
+      "specs",
+      "src",
+      "tests"
+    ],
+    "stack": [
+      "root:Next.js"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint",
+          "db:push",
+          "db:seed"
+        ],
+        "deps": [
+          "postcss",
+          "lucide-react",
+          "next",
+          "@prisma/client",
+          "@types/react-dom",
+          "react",
+          "@types/node",
+          "typescript"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "file:./dev.db"
+    }
+  },
+  {
+    "name": "Restaurant-Qr",
+    "subdirs": [
+      "backend",
+      "frontend",
+      "memory",
+      "plan",
+      "tests",
+      "test_reports"
+    ],
+    "stack": [
+      "Python",
+      "frontend:React",
+      "FastAPI"
+    ],
+    "db": [
+      "MongoDB"
+    ],
+    "prisma": false,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "frontend": {
+        "scripts": [
+          "start",
+          "build",
+          "test"
+        ],
+        "deps": [
+          "@radix-ui/react-avatar",
+          "@radix-ui/react-label",
+          "@radix-ui/react-toggle-group",
+          "@radix-ui/react-menubar",
+          "@radix-ui/react-switch",
+          "@radix-ui/react-alert-dialog",
+          "tailwindcss-animate",
+          "class-variance-authority"
+        ]
+      }
+    },
+    "env_vars": {
+      "MONGO_URL": "mongodb://localhost:27017",
+      "WDS_SOCKET_PORT": "3000"
+    }
+  },
+  {
+    "name": "Service_Finder",
+    "subdirs": [
+      "ai-service",
+      "backend-nest",
+      "docs",
+      "frontend",
+      "frontend-expo",
+      "k8s",
+      "load-testing",
+      "nginx",
+      "replica",
+      "scratch",
+      "scripts",
+      "specs",
+      "temp_profile",
+      "tests"
+    ],
+    "stack": [
+      "frontend:Next.js"
+    ],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint",
+          "test",
+          "test:unit"
+        ],
+        "deps": [
+          "@radix-ui/react-avatar",
+          "@radix-ui/react-label",
+          "@radix-ui/react-switch",
+          "eslint",
+          "class-variance-authority",
+          "@tanstack/react-query",
+          "@radix-ui/react-toast",
+          "install"
+        ]
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "SoftwareBP",
+    "subdirs": [
+      "backend",
+      "frontend"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "backend:NestJS"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "backend": {
+        "scripts": [
+          "build",
+          "format",
+          "start",
+          "start:dev",
+          "start:debug",
+          "start:prod"
+        ],
+        "deps": [
+          "eslint",
+          "@nestjs/core",
+          "class-validator",
+          "reflect-metadata",
+          "eslint-plugin-prettier",
+          "jszip",
+          "ts-node",
+          "better-auth"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "eslint",
+          "@base-ui/react",
+          "class-variance-authority",
+          "@tanstack/react-query",
+          "@xyflow/react",
+          "jszip",
+          "better-auth",
+          "@tailwindcss/postcss"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgres://postgres:postgres@127.0.0.1:51214/template1?sslmode=disable&pgbouncer=true",
+      "PORT": "3001"
+    }
+  },
+  {
+    "name": "Stackgen",
+    "subdirs": [
+      "backend",
+      "frontend"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "backend:NestJS"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "backend": {
+        "scripts": [
+          "build",
+          "format",
+          "start",
+          "start:dev",
+          "start:debug",
+          "start:prod"
+        ],
+        "deps": [
+          "eslint",
+          "@nestjs/core",
+          "class-validator",
+          "reflect-metadata",
+          "eslint-plugin-prettier",
+          "jszip",
+          "ts-node",
+          "better-auth"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "eslint",
+          "@base-ui/react",
+          "class-variance-authority",
+          "@tanstack/react-query",
+          "@xyflow/react",
+          "jszip",
+          "better-auth",
+          "@tailwindcss/postcss"
+        ]
+      }
+    },
+    "env_vars": {
+      "DATABASE_URL": "postgres://postgres:postgres@127.0.0.1:51214/template1?sslmode=disable&pgbouncer=true",
+      "PORT": "3001"
+    }
+  },
+  {
+    "name": "StayPilot",
+    "subdirs": [
+      "apps",
+      "packages"
+    ],
+    "stack": [],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "dev",
+          "dev:api",
+          "dev:web",
+          "build",
+          "test",
+          "db:up"
+        ],
+        "deps": []
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "Telegram-MCP",
+    "subdirs": [
+      "config",
+      "src"
+    ],
+    "stack": [],
+    "db": [],
+    "prisma": false,
+    "has_backend_folder": false,
+    "has_frontend_folder": false,
+    "pkg_details": {
+      "root": {
+        "scripts": [
+          "start"
+        ],
+        "deps": [
+          "openai",
+          "screenshot-desktop",
+          "systeminformation",
+          "@google/genai",
+          "form-data",
+          "node-telegram-bot-api",
+          "dotenv",
+          "open"
+        ]
+      }
+    },
+    "env_vars": {}
+  },
+  {
+    "name": "TradingView-MCP",
+    "subdirs": [
+      "backend",
+      "frontend"
+    ],
+    "stack": [
+      "frontend:Next.js",
+      "backend:Express"
+    ],
+    "db": [
+      "Prisma"
+    ],
+    "prisma": true,
+    "has_backend_folder": true,
+    "has_frontend_folder": true,
+    "pkg_details": {
+      "backend": {
+        "scripts": [
+          "build",
+          "start",
+          "dev",
+          "db:push",
+          "db:studio",
+          "test"
+        ],
+        "deps": [
+          "express",
+          "@modelcontextprotocol/sdk",
+          "ioredis",
+          "@types/ws",
+          "jest",
+          "@types/cors",
+          "ws",
+          "prisma"
+        ]
+      },
+      "frontend": {
+        "scripts": [
+          "dev",
+          "build",
+          "start",
+          "lint"
+        ],
+        "deps": [
+          "lucide-react",
+          "eslint",
+          "next",
+          "framer-motion",
+          "@types/react-dom",
+          "react",
+          "@types/node",
+          "@types/react"
+        ]
+      }
+    },
+    "env_vars": {
+      "PORT": "4000",
+      "DATABASE_URL": "postgresql://postgres:postgrespassword@localhost:54325/signalscope?schema=public"
+    }
+  }
+]

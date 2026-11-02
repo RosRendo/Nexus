@@ -1,8 +1,8 @@
 @echo off
-title Nexus Founder OS - Backend & Tunnel Launcher
+title Nexus Founder OS - Backend & Cloudflare Launcher
 echo ===================================================
-echo   Nexus Founder OS - Local Backend & Ngrok Tunnel
-echo   Static Domain: inlying-untranscended-dorothy.ngrok-free.dev
+echo   Nexus Founder OS - Local Backend & Cloudflare Tunnel
+echo   Domain: dashboardkiller.online
 echo ===================================================
 echo.
 
@@ -24,8 +24,7 @@ start "Nexus FastAPI" /min "C:\Users\ROS RENDO\AppData\Local\Programs\Python\Pyt
 timeout /t 2 >nul
 
 echo.
-echo [3/3] Starting ngrok tunnel to inlying-untranscended-dorothy.ngrok-free.dev...
-npx ngrok http --url=inlying-untranscended-dorothy.ngrok-free.dev 8000
+echo [3/3] Starting Cloudflare Tunnel to dashboardkiller.online...
+cloudflared.exe tunnel run --token eyJhIjoiNjgyYTI2OGM1YjBlNThhMjRjMTU0Y2I2MjU1ODVlN2MiLCJ0IjoiZDg4NTUzZmItZDVlMy00OTZhLWIyNWUtOGY4ODI1NTcwYTIzIiwicyI6Ik56UXlPV0pqTnpJdE5HSmtNQzAwWW1GbExUbGtPREV0WVRObFpqZGxZVEpqTjJabSJ9
 
 pause
-
