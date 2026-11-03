@@ -1,9 +1,12 @@
 {
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://crm.dashboardkiller.online/api/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
   ]
 }
-
